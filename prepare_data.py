@@ -81,13 +81,13 @@ def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
     #Normalizing by number of events
     n_tot = loaded_data.sum()["Nevt"]
     loaded_data["Weights"] = loaded_data["Nevt"]/n_tot
-    if XS_norm= True :
+#    if XS_norm= True :
         #Normalizing by cross section
-        XS_tot = loaded_data.sum()["XS"]
-        loaded_data["Weights"] = loaded_data["Weights"]*loaded_data["XS"]/XS_tot
+#        XS_tot = loaded_data.sum()["XS"]
+#        loaded_data["Weights"] = loaded_data["Weights"]*loaded_data["XS"]/XS_tot
     #Selecting data by taking account of weights
-    min_weight = loaded_data.min()["Weights"]
-    loaded_data["Nevt"] = loaded_data["Nevt"]*loaded_data["Weights"]/min_weight
+#    min_weight = loaded_data.min()["Weights"]
+#    loaded_data["Nevt"] = loaded_data["Nevt"]*loaded_data["Weights"]/min_weight
     return loaded_data
 
 
