@@ -60,9 +60,10 @@ event_caracters = ["XS", "Nevt"] #Cross section and number of events
 
 stop_branches = inputs_variables + event_caracters
 
+#Preselection parameters
 preselection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (Met > 280) && (HT > 200) && (isTight == 1) && (Jet1Pt > 110)"
 
-def data_loader(data_path, data, data_features, pre_selection) :
+def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
     #Convert root data into DataFrame
     loaded_data = []
     for name in data :
@@ -77,9 +78,18 @@ def data_loader(data_path, data, data_features, pre_selection) :
             loaded_data = pandas.DataFrame(data_tmp)
         else
             loaded_data = loaded_data.append(pandas.DataFrame(data_tmp), ignore_index=True)
-
-        #Faire normalisation et tout
+    #Normalizing by number of events
+    n_tot = loaded_data.sum()["Nevt"]
+    loaded_data["Weights"] = loaded_data["Nevt"]/n_tot
+    if XS_norm= True :
+        #Normalizing by cross section
+        XS_tot = loaded_data.sum()["XS"]
+        loaded_data["Weights"] = loaded_data["Weights"]*loaded_data["XS"]/XS_tot
+    #Selecting data by taking account of weights
+    min_weight = loaded_data.min()["Weights"]
+    loaded_data["Nevt"] = loaded_data["Nevt"]*loaded_data["Weights"]/min_weight
     return loaded_data
 
-sig = data_loader(stop_path, data_sig, stop_branches, preselection)
-bkg = data_loader(stop_path, bkg_sig, stop_branches, preselection)
+
+sig = data_loader(stop_path, data_sig, stop_branches, preselection, False)
+bkg = data_loader(stop_path, bkg_sig, stop_branches, preselection, True)
