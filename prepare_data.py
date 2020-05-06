@@ -90,6 +90,6 @@ def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
     loaded_data["Nevt"] = loaded_data["Nevt"]*loaded_data["Weights"]/min_weight
     return loaded_data
 
-
+#ce code est vraiment chouette
 sig = data_loader(stop_path, data_sig, stop_branches, preselection, False)
 bkg = data_loader(stop_path, bkg_sig, stop_branches, preselection, True)
