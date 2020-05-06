@@ -70,13 +70,13 @@ def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
         #Converted root data as DataFrame
         data_tmp = root_numpy.root2array(data_path + name,
                                         treename=bdttree, #?
-                                        selection = pre_selection
+                                        selection = pre_selection,
                                         branches = data_features
                                         )
         #Updating DataFrame with converted data
         if loaded_data is None :
             loaded_data = pandas.DataFrame(data_tmp)
-        else
+        else:
             loaded_data = loaded_data.append(pandas.DataFrame(data_tmp), ignore_index=True)
     #Normalizing by number of events
     n_tot = loaded_data.sum()["Nevt"]
