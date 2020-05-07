@@ -3,6 +3,8 @@
 #include <fstream>
 #include <cmath>
 #include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "TROOT.h"
 #include "TFile.h"
@@ -15,7 +17,7 @@
 #include "string"
 #include "vector"
 
-int main void (){
+void prepare_rootfile_data(){
   //Path to data
   string stop_path = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19/";
   //Signal data to be imported
@@ -68,24 +70,25 @@ int main void (){
 
   //Variables to be imported
   string stop_branches[] = {"Jet1Pt", "Met", "mt", "LepPt", "LepEta", "LepChg",
-                      "HT", "NbLoose", "Njet", "JetHBpt", "DrJetHPLep", "JetHBCSV","XS", "Nevt"};
+                      "HT", "NbLoose", "Njet", "JetHBpt", "DrJetHBLep", "JetHBCSV","XS", "Nevt"};
 
   //Preselection parameters
   string preselection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (Met > 280) && (HT > 200) && (isTight == 1) && (Jet1Pt > 110)";
-  //creating new root file test number 1
+  //Creating new root file test number 1
   int i = 0;
-  for (i = 0; i < sizeof(data_bkg); i++) {
-    string filename = stop_path + data_bkg[i];
-    TFile oldfile(filename);
-    TTree *bdttree;
-    oldfile.GetObject("t", bdttree);
-    bdttree->SetBranchStatus("*",0);
-
-    for(auto Branch : stop_branches){
-      bdttree->SetBranchStatus(Branch,1);
+  for (i = 0; i < 9; i++){
+    string filename = (stop_path + data_bkg[i]).c_str();
+    const char * c1 = filename.c_str();
+    TFile oldfile(c1, "READ");
+    TTree* skimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
+    skimmed_tree->SetBranchStatus("*",0);
+    int j=0;
+    for(j=0; j<14; j++){
+     const char * c2 = stop_branches[j].c_str(); 
+     skimmed_tree->SetBranchStatus(c2, 1);
     }
-    TFile newfile("skimmed_" + data_bkg[i], recreate);
-    newtree->Print();
+    const char * c3 = ("skimmed_" + data_bkg[i]).c_str();
+    TFile newfile("bob.root", "RECREATE");
     newfile.Write();
   }
 }

@@ -17,10 +17,10 @@
 
 
 void plot550_520(){
-  TChain plot_550_520("bdttree");
+  TChain plot_550_520();
 
   // access bdtt
-  plot_550_520.Add("/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test/T2DegStop_550_520.root");
+  plot_550_520.Add("/home/t3cms/timothee/Stage2020/susy_qa_interns_2020/bob.root");
 
   // plot create
   TH1D* pl_lepPt = new TH1D("pl_lepPt", "lepPT", 200,0,200);
