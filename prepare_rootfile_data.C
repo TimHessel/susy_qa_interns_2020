@@ -77,7 +77,7 @@ void prepare_rootfile_data(){
   //Creating new root file test number 1
   int i = 0;
   for (i = 0; i < 9; i++){
-    string filename = (stop_path + data_bkg[i]).c_str();
+    string filename = (stop_path + data_bkg[i]);
     const char * c1 = filename.c_str();
     TFile oldfile(c1, "READ");
     TTree* skimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
@@ -87,8 +87,9 @@ void prepare_rootfile_data(){
      const char * c2 = stop_branches[j].c_str(); 
      skimmed_tree->SetBranchStatus(c2, 1);
     }
-    const char * c3 = ("skimmed_" + data_bkg[i]).c_str();
-    TFile newfile("bob.root", "RECREATE");
+    string file_out = ("skimmed_" + data_bkg[i]);
+    const char * c3 = file_out.c_str();
+    TFile newfile(c3, "RECREATE");
     newfile.Write();
   }
 }
