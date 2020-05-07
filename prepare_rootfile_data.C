@@ -84,10 +84,27 @@ void prepare_rootfile_data(){
     skimmed_tree->SetBranchStatus("*",0);
     int j=0;
     for(j=0; j<14; j++){
-     const char * c2 = stop_branches[j].c_str(); 
+     const char * c2 = stop_branches[j].c_str();
      skimmed_tree->SetBranchStatus(c2, 1);
     }
     string file_out = ("skimmed_" + data_bkg[i]);
+    const char * c3 = file_out.c_str();
+    TFile newfile(c3, "RECREATE");
+    newfile.Write();
+  }
+  int k = 0;
+  for (k = 0; k < 26; k++){
+    string filename = (stop_path + data_bkg[k]);
+    const char * c1 = filename.c_str();
+    TFile oldfile(c1, "READ");
+    TTree* skimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
+    skimmed_tree->SetBranchStatus("*",0);
+    int l=0;
+    for(l=0; l<14; l++){
+     const char * c2 = stop_branches[l].c_str(); 
+     skimmed_tree->SetBranchStatus(c2, 1);
+    }
+    string file_out = ("skimmed_" + data_sig[k]);
     const char * c3 = file_out.c_str();
     TFile newfile(c3, "RECREATE");
     newfile.Write();
