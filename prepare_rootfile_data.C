@@ -94,14 +94,14 @@ void prepare_rootfile_data(){
   }
   int k = 0;
   for (k = 0; k < 26; k++){
-    string filename = (stop_path + data_bkg[k]);
+    string filename = (stop_path + data_sig[k]);
     const char * c1 = filename.c_str();
     TFile oldfile(c1, "READ");
     TTree* skimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
     skimmed_tree->SetBranchStatus("*",0);
     int l=0;
     for(l=0; l<14; l++){
-     const char * c2 = stop_branches[l].c_str(); 
+     const char * c2 = stop_branches[l].c_str();
      skimmed_tree->SetBranchStatus(c2, 1);
     }
     string file_out = ("skimmed_" + data_sig[k]);
