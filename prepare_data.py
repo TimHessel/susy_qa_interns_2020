@@ -34,7 +34,7 @@ data_sig = ["T2DegStop_250_220.root",
             "T2DegStop_775_745.root",
             "T2DegStop_800_770.root"
             ]
-#Background data to be imported
+#Background data to be imported, regrouped by crossections
 data_bkg = ["Wjets_70to100.root",
             "Wjets_100to200.root",
             "Wjets_200to400.root",
@@ -78,14 +78,24 @@ def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
             loaded_data = pandas.DataFrame(data_tmp)
         else
             loaded_data = loaded_data.append(pandas.DataFrame(data_tmp), ignore_index=True)
-    #Normalizing by number of events
-    n_tot = loaded_data.sum()["Nevt"]
-    loaded_data["Weights"] = loaded_data["Nevt"]/n_tot
-    if XS_norm= True :
-        #Normalizing by cross section
-        XS_tot = loaded_data.sum()["XS"]
-        loaded_data["Weights"] = loaded_data["Weights"]*loaded_data["XS"]/XS_tot
-    #Selecting data by taking account of weights
+    #Normalizing by number of event inside each cross section
+    i=0
+    XS_tot=0
+    loaded_data["Weights"]=0
+    while i<loaded_data["XS"].size :
+        #XS loop, each time i changes, we jump to another cross section group of events
+        j=i
+        n_tot_tmp=0
+        XS_tot += loaded_data["XS"][i]
+        while loaded_data["XS"][i] = loaded_data["XS"][j] :
+            #Normalizing by the number of events inside a cross section group of events
+            n_tot_tmp += loaded_data["Nevt"][j]
+            j++
+        for k in range i<j :
+            loaded_data["Weights"][k] = loaded_data["Nevt"][k]*loaded_data["XS"][k]/n_tot_tmp
+        i=j+1
+    loaded_data["Weights"]/=XS_tot
+    #Optimising the number of events so that the minimun of Nevt is 1 
     min_weight = loaded_data.min()["Weights"]
     loaded_data["Nevt"] = loaded_data["Nevt"]*loaded_data["Weights"]/min_weight
     return loaded_data
