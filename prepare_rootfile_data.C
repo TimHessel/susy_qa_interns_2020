@@ -75,38 +75,41 @@ void prepare_rootfile_data(){
   //Preselection parameters
   string preselection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (Met > 280) && (HT > 200) && (isTight == 1) && (Jet1Pt > 110)";
   //Creating new root file test number 1
+  
   int i = 0;
   for (i = 0; i < 9; i++){
     string filename = (stop_path + data_bkg[i]);
     const char * c1 = filename.c_str();
     TFile oldfile(c1, "READ");
-    TTree* skimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
-    skimmed_tree->SetBranchStatus("*",0);
+    TTree* T = static_cast <TTree*>(oldfile.Get("bdttree"));
+    T->SetBranchStatus("*",0);
     int j=0;
     for(j=0; j<14; j++){
      const char * c2 = stop_branches[j].c_str();
-     skimmed_tree->SetBranchStatus(c2, 1);
+     T->SetBranchStatus(c2, 1);
     }
     string file_out = ("skimmed_" + data_bkg[i]);
     const char * c3 = file_out.c_str();
     TFile newfile(c3, "RECREATE");
-    newfile.Write();
+    TTree* tree = T->CloneTree();
+    tree->Write();
   }
   int k = 0;
   for (k = 0; k < 26; k++){
     string filename = (stop_path + data_sig[k]);
     const char * c1 = filename.c_str();
     TFile oldfile(c1, "READ");
-    TTree* skimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
-    skimmed_tree->SetBranchStatus("*",0);
+    TTree* T = static_cast <TTree*>(oldfile.Get("bdttree"));
+    T->SetBranchStatus("*",0);
     int l=0;
     for(l=0; l<14; l++){
      const char * c2 = stop_branches[l].c_str();
-     skimmed_tree->SetBranchStatus(c2, 1);
+     T->SetBranchStatus(c2, 1);
     }
     string file_out = ("skimmed_" + data_sig[k]);
     const char * c3 = file_out.c_str();
     TFile newfile(c3, "RECREATE");
-    newfile.Write();
+    TTree* tree = T->CloneTree();
+    tree->Write();
   }
 }
