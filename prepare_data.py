@@ -55,7 +55,7 @@ data_bkg = ["Wjets_70to100.root",
 
 #Variables to be imported
 inputs_variables = ["Jet1Pt", "Met", "mt", "LepPt", "LepEta", "LepChg",
-                    "HT", "NbLoose", "Njet", "DrJetHPLep", "JetHBCSV"]
+                    "HT", "NbLoose", "Njet", "JetHBpt","DrJetHPLep", "JetHBCSV"]
 event_caracters = ["XS", "Nevt"] #Cross section and number of events
 
 stop_branches = inputs_variables + event_caracters
