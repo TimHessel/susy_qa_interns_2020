@@ -17,6 +17,8 @@
 #include "TGraphErrors.h"
 #include "string"
 #include "vector"
+#include "TObject.h"
+#include "TMVA/Types.h"
 
 int size_str_array(string *tab){
   //Calculates the size of an array of string AS LONG AS it ends with "0"
@@ -27,7 +29,7 @@ int size_str_array(string *tab){
   return n;
 }
 
-void skimming_rootfile(string *data, string path, string *branches,const char* directory){
+void skimming_rootfile(string *data, string path, string *branches, const char* directory){
   //Creates new root files with selected branches in a specified directory
   //Size of data
   int n_data = size_str_array(data);
@@ -38,27 +40,44 @@ void skimming_rootfile(string *data, string path, string *branches,const char* d
     string filename = (path + data[i]);
     const char * c1 = filename.c_str();
     TFile oldfile(c1, "READ");
-    TTree* trimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
+    TTree* full_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
     //Muting unselected branches
-    trimmed_tree->SetBranchStatus("*",0);
+    full_tree->SetBranchStatus("*",0);
     int j=0;
     for(j=0; j<n_branches; j++){
     //Selecting wanted branches for the new root files
      const char * c2 = branches[j].c_str();
-     trimmed_tree->SetBranchStatus(c2, 1);
+     full_tree->SetBranchStatus(c2, 1);
     }
+    //Number of events in a root files 
+    Long64_t n_events = full_tree->GetEntries();
+    //Declaring event pointer and new tree
+    Event *event = new Event();
+    full_tree->SetBranchAddress("event", &event);
+    TTree* skimmed_tree = full_tree->CloneTree();
+    //Preselection
+    Long64_t ent = 0;
+    for(ent=0; ent<n_events; ent++){
+      full_tree->GetEntry(ent);
+      if((event->GetDPhiJet1Jet2 < 2.5 || event->GetJet2Pt < 60) && event->GetMET > 280 && event->GetHT > 200 && event->GetisTight == 1 && event->GetJet1Pt > 110){
+        skimmed_tree->Fill();
+      }
+      event->clear();
+    }
+
     //Writing new files in the specified directory
     string file_out = (string(directory) + "trimmed_" + data[i]);
     const char * c3 = file_out.c_str();
     TFile newfile(c3, "RECREATE");
-    newfile.Write();
+    skimmed_tree->Write();
   }
 }
 
 void prepare_rootfile_data(){
+  //gSysytem->Load("path_to_file/libEvent") -- We do not know the path_to_file/libEvent
   //Path to data
   string stop_path = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19/";
-  //Signal data to be imported, needs to end by '0' so that size ca be calculated
+  //Signal data to be imported, needs to end by "0" so that size can be calculated
   string data_sig[]= {"T2DegStop_250_220.root",
               "T2DegStop_275_245.root",
               "T2DegStop_300_270.root",
@@ -98,13 +117,13 @@ void prepare_rootfile_data(){
               "Wjets_1200to2500.root",
               "Wjets_2500toInf.root",
               "TT_pow.root",
-              /*"ZJetsToNuNu_HT100to200.root",
+              "ZJetsToNuNu_HT100to200.root",
               "ZJetsToNuNu_HT200to400.root",
               "ZJetsToNuNu_HT400to600.root",
               "ZJetsToNuNu_HT600to800.root",
               "ZJetsToNuNu_HT800to1200.root",
               "ZJetsToNuNu_HT1200to2500.root",
-              "ZJetsToNuNu_HT2500toInf.root,"*/
+              "ZJetsToNuNu_HT2500toInf.root",
 	      "0"
             };
 
