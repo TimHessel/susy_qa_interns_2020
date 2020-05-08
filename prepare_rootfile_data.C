@@ -5,6 +5,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "TROOT.h"
 #include "TFile.h"
@@ -17,27 +18,37 @@
 #include "string"
 #include "vector"
 
-int array_size(tab[]){
-  int size;
-  size = int(sizeof(tab)/sizeof(tab[0]));
-  return size;
+int size_str_array(string *tab){
+  //Calculates the size of an array of string AS LONG AS it ends with "0"
+  int n = 0;
+  while(tab[n]!="0"){
+    n++;
+  }
+  return n;
 }
 
-void skimming_rootfile(string data[], string path, string branches[]){
-  //Creating new root file test number 1
+void skimming_rootfile(string *data, string path, string *branches,const char* directory){
+  //Creates new root files with selected branches in a specified directory
+  //Size of data
+  int n_data = size_str_array(data);
+  int n_branches = size_str_array(branches);
   int i = 0;
-  for (i = 0; i < array_size(data); i++){
+  for (i = 0; i < n_data; i++){
+    //Loading file
     string filename = (path + data[i]);
     const char * c1 = filename.c_str();
     TFile oldfile(c1, "READ");
     TTree* trimmed_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
+    //Muting unselected branches
     trimmed_tree->SetBranchStatus("*",0);
     int j=0;
-    for(j=0; j<array_size(branches); j++){
+    for(j=0; j<n_branches; j++){
+    //Selecting wanted branches for the new root files
      const char * c2 = branches[j].c_str();
      trimmed_tree->SetBranchStatus(c2, 1);
     }
-    string file_out = ("trimmed_" + data_bkg[i]);
+    //Writing new files in the specified directory
+    string file_out = (string(directory) + "trimmed_" + data[i]);
     const char * c3 = file_out.c_str();
     TFile newfile(c3, "RECREATE");
     newfile.Write();
@@ -47,7 +58,7 @@ void skimming_rootfile(string data[], string path, string branches[]){
 void prepare_rootfile_data(){
   //Path to data
   string stop_path = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19/";
-  //Signal data to be imported
+  //Signal data to be imported, needs to end by '0' so that size ca be calculated
   string data_sig[]= {"T2DegStop_250_220.root",
               "T2DegStop_275_245.root",
               "T2DegStop_300_270.root",
@@ -74,9 +85,10 @@ void prepare_rootfile_data(){
               "T2DegStop_725_695.root",
               "T2DegStop_750_720.root",
               "T2DegStop_775_745.root",
-              "T2DegStop_800_770.root"
+              "T2DegStop_800_770.root",
+	      "0"
             };
-  //Background data to be imported, regrouped by crossections
+  //Background data to be imported, regrouped by crossections, needs to end with "0" so that size can be calculated
   string data_bkg[] = {"Wjets_70to100.root",
               "Wjets_100to200.root",
               "Wjets_200to400.root",
@@ -92,17 +104,22 @@ void prepare_rootfile_data(){
               "ZJetsToNuNu_HT600to800.root",
               "ZJetsToNuNu_HT800to1200.root",
               "ZJetsToNuNu_HT1200to2500.root",
-              "ZJetsToNuNu_HT2500toInf.root"*/
+              "ZJetsToNuNu_HT2500toInf.root,"*/
+	      "0"
             };
 
-  //Variables to be imported
+  //Variables to be imported, needs to end with "0" so that size can be calculated
   string stop_branches[] = {"Jet1Pt", "Met", "mt", "LepPt", "LepEta", "LepChg",
-                      "HT", "NbLoose", "Njet", "JetHBpt", "DrJetHBLep", "JetHBCSV","XS", "Nevt"};
+                      "HT", "NbLoose", "Njet", "JetHBpt", "DrJetHBLep", "JetHBCSV","XS", "Nevt", "0"};
 
   //Preselection parameters
   string preselection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (Met > 280) && (HT > 200) && (isTight == 1) && (Jet1Pt > 110)";
-  //Creating new root file
-  skimming_rootfile(data_sig, stop_path, stop_branches);
-  skimming_rootfile(data_bkg, stop_path, stop_branches);
-  }
+  //Creating new root file in a new directory
+  const char* directory_name = "skimmed_data/";
+  mkdir(directory_name, 0777);
+  printf("Loading signal...\n");
+  skimming_rootfile(data_sig, stop_path, stop_branches, directory_name);
+  printf("Signal loaded\nLoading background...\n");
+  skimming_rootfile(data_bkg, stop_path, stop_branches, directory_name);
+  printf("Background loaded\n"); 
 }
