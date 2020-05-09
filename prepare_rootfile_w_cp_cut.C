@@ -48,22 +48,11 @@ void skimming_rootfile(string *data, string path, string *branches, const char* 
     //Selecting wanted branches for the new root files
      const char * c2 = branches[j].c_str();
      full_tree->SetBranchStatus(c2, 1);
-    }
-    //Number of events in a root files
-  /*  Long64_t n_events = full_tree->GetEntries();
-    //Declaring event pointer and new tree
-    Event *event = new Event();
-    full_tree->SetBranchAddress("event", &event);   */
-    TTree* skimmed_tree = full_tree->CloneTree();
-    //Preselection
-  /*  Long64_t ent = 0;
-    for(ent=0; ent<n_events; ent++){
-      full_tree->GetEntry(ent);
-      if((event->GetDPhiJet1Jet2 < 2.5 || event->GetJet2Pt < 60) && event->GetMET > 280 && event->GetHT > 200 && event->GetisTight == 1 && event->GetJet1Pt > 110){
-        skimmed_tree->Fill();
-      }
-      event->clear(); */
-    }
+   }
+/* */
+    //Cloning tree with preselection
+    TCut* cut = "(Met > 280)";
+    TTree* skimmed_tree = full_tree->CopyTree(cut);
 
     //Writing new files in the specified directory
     string file_out = (string(directory) + "trimmed_" + data[i]);
@@ -137,7 +126,7 @@ void prepare_rootfile_data(){
   const char* directory_name = "skimmed_data/";
   mkdir(directory_name, 0777);
   printf("Loading signal...\n");
-//  skimming_rootfile(data_sig, stop_path, stop_branches, directory_name);
+  //skimming_rootfile(data_sig, stop_path, stop_branches, directory_name);
   printf("Signal loaded\nLoading background...\n");
   skimming_rootfile(data_bkg, stop_path, stop_branches, directory_name);
   printf("Background loaded\n");
