@@ -50,19 +50,19 @@ void skimming_rootfile(string *data, string path, string *branches, const char* 
      full_tree->SetBranchStatus(c2, 1);
     }
     //Number of events in a root files
-  /*  Long64_t n_events = full_tree->GetEntries();
+    Long64_t n_events = full_tree->GetEntries();
     //Declaring event pointer and new tree
     Event *event = new Event();
-    full_tree->SetBranchAddress("event", &event);   */
+    full_tree->SetBranchAddress("event", &event);
     TTree* skimmed_tree = full_tree->CloneTree();
     //Preselection
-  /*  Long64_t ent = 0;
+    Long64_t ent = 0;
     for(ent=0; ent<n_events; ent++){
       full_tree->GetEntry(ent);
       if((event->GetDPhiJet1Jet2 < 2.5 || event->GetJet2Pt < 60) && event->GetMET > 280 && event->GetHT > 200 && event->GetisTight == 1 && event->GetJet1Pt > 110){
         skimmed_tree->Fill();
       }
-      event->clear(); */
+      event->clear();
     }
 
     //Writing new files in the specified directory
@@ -109,7 +109,7 @@ void prepare_rootfile_data(){
             };
   //Background data to be imported, regrouped by crossections, needs to end with "0" so that size can be calculated
   string data_bkg[] = {"Wjets_70to100.root",
-            /*  "Wjets_100to200.root",
+              "Wjets_100to200.root",
               "Wjets_200to400.root",
               "Wjets_400to600.root",
               "Wjets_600to800.root",
@@ -123,7 +123,7 @@ void prepare_rootfile_data(){
               "ZJetsToNuNu_HT600to800.root",
               "ZJetsToNuNu_HT800to1200.root",
               "ZJetsToNuNu_HT1200to2500.root",
-              "ZJetsToNuNu_HT2500toInf.root", */
+              "ZJetsToNuNu_HT2500toInf.root",
 	      "0"
             };
 
@@ -137,7 +137,7 @@ void prepare_rootfile_data(){
   const char* directory_name = "skimmed_data/";
   mkdir(directory_name, 0777);
   printf("Loading signal...\n");
-//  skimming_rootfile(data_sig, stop_path, stop_branches, directory_name);
+  skimming_rootfile(data_sig, stop_path, stop_branches, directory_name);
   printf("Signal loaded\nLoading background...\n");
   skimming_rootfile(data_bkg, stop_path, stop_branches, directory_name);
   printf("Background loaded\n");
