@@ -29,10 +29,6 @@ void plot_root(){
               "T2DegStop_425_395.root",
               "T2DegStop_450_420.root",
               "T2DegStop_475_445.root",
-              "T2DegStop_400_370.root",
-              "T2DegStop_425_395.root",
-              "T2DegStop_450_420.root",
-              "T2DegStop_475_445.root",
               "T2DegStop_500_470.root",
               "T2DegStop_525_495.root",
               "T2DegStop_550_520.root",
@@ -70,7 +66,7 @@ void plot_root(){
   TChain plot("bdttree");
 
   // access bdtt
-  plot.Add("/home/t3cms/thessel/skimmed_data/TT_pow.root");
+  plot.Add("/home/t3cms/thessel/skimmed_data/skimmed_Wjets_800to1200.root");
 
   // plot create
   TH1D* pl_lepPt = new TH1D("pl_lepPt", "lepPT", 200,0,200);
@@ -137,7 +133,8 @@ void plot_root(){
   pl_jet_HB_csv->Draw("");
 
   //SAVE
-  c1->SaveAs("compare_histograms_TT_pow.pdf");
+  c1->SaveAs("plots/compare_histograms_wjets800to1200.pdf");
+
 
 
 }
