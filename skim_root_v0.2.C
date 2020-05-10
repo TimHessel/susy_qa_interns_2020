@@ -31,10 +31,6 @@ void skim_root(){
               "T2DegStop_425_395.root",
               "T2DegStop_450_420.root",
               "T2DegStop_475_445.root",
-              "T2DegStop_400_370.root",
-              "T2DegStop_425_395.root",
-              "T2DegStop_450_420.root",
-              "T2DegStop_475_445.root",
               "T2DegStop_500_470.root",
               "T2DegStop_525_495.root",
               "T2DegStop_550_520.root",
@@ -65,7 +61,7 @@ void skim_root(){
               "ZJetsToNuNu_HT600to800.root",
               "ZJetsToNuNu_HT800to1200.root",
               "ZJetsToNuNu_HT1200to2500.root",
-              "ZJetsToNuNu_HT2500toInf.root" 
+              "ZJetsToNuNu_HT2500toInf.root"
             };
 
   //Variables to be imported
