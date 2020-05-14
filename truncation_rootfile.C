@@ -1,6 +1,7 @@
-/* 
+/*
 Truncating program for each skimmed root file.
 Creating truncated file in truncated_data/ according to furnished criteria of each root file.
+Fill with truncation critera
 TO BE TESTED
 11/05/2020
 */
@@ -44,7 +45,7 @@ void truncate(string data[], string path, const char* dir, string selection[]){
     printf("Loading %s...\n", data[i].c_str());
     TFile oldfile(c1, "READ");
     TTree* full_tree = static_cast <TTree*>(oldfile.Get("bdttree"));
-    //Writting new tree in a new root file 
+    //Writting new tree in a new root file
     string file_out = string(dir) + "truncated_" + data[i];
     const char * c2 = file_out.c_str();
     TFile newfile(c2, "RECREATE");
@@ -113,12 +114,41 @@ void truncation_rootfile(){
                       "HT", "NbLoose", "Njet", "JetHBpt", "DrJetHBLep", "JetHBCSV","XS", "Nevt", "0"};
 
   //Truncation criteria arrays for signal and background
-  string sig_truncation[]  = {"",
-			"",
-			""};
-  string bkg_truncation[]  = {"",
-                        "",
-                        "(Jet1PT<1100)&&(Met<800)&&(mt<700)&&(LepPt<500)&&(HT<2000)&&(JetHBpt<900)&&(DRJet<4,6)&&(DRJet>0,1)&&(JetHBCSV>0,04)"}; 
+  string sig_truncation[]  =
+  {"(Jet1Pt<1000)&&(Met<920)&&(mt<210)&&(LepPt<78)&&(HT<1600)&&(JetHBpt<800)&&(DRJet<4,8)&&(DRJet>0)&&(JetHBCSV>0,045)&&(LepEta>-2,4)",
+	"(Jet1Pt<1000)&&(Met<1050)&&(mt<228)&&(LepPt<72)&&(HT<1550)&&(JetHBpt<900)&&(DRJet<4,8)&&(DRJet>0,008)&&(JetHBCSV>0,04)&&(LepEta>-2,4)",
+  "(Jet1Pt<1060)&&(Met<1050)&&(mt<370)&&(LepPt<78)&&(HT<1560)&&(JetHBpt<865)&&(DRJet<4,9)&&(DRJet>0)&&(JetHBCSV>0,4)&&(LepEta>-2,4)&&(LepEta<2,4)",
+  "(Jet1Pt<1250)&&(Met<1050)&&(mt<330)&&(LepPt<75)&&(HT<1640)&&(JetHBpt<1000)&&(DRJet<5)&&(DRJet>0)&&(JetHBCSV>0)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt<1240)&&(Met<1340)&&(mt<285)&&(LepPt<74)&&(HT<1900)&&(JetHBpt<1200)&&(DRJet<5)&&(DRJet>0)&&(JetHBCSV>0,05)&&(LepEta>-2,35)&&(LepEta<2,4)",
+  "(Jet1Pt<1400)&&(Met<1300)&&(mt<400)&&(LepPt<69)&&(HT<1900)&&(JetHBpt<1100)&&(DRJet<5,1)&&(DRJet>0)&&(JetHBCSV>0,052)&&(LepEta>-2,5)&&(LepEta<2,4)",
+  "(Jet1Pt<1200)&&(Met<1350)&&(mt<350)&&(LepPt<74)&&(HT<1700)&&(JetHBpt<1000)&&(DRJet<5)&&(DRJet>0)&&(JetHBCSV>0,04)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt<1300)&&(Met<1375)&&(mt<250)&&(LepPt<60)&&(HT<1900)&&(JetHBpt<1080)&&(DRJet<4,7)&&(DRJet>0)&&(JetHBCSV>0,04)&&(LepEta>-2,5)&&(LepEta<2,3)",
+  "(Jet1Pt<1200)&&(Met<1300)&&(mt<260)&&(LepPt<53)&&(HT<1575)&&(JetHBpt<1000)&&(DRJet<4,9)&&(DRJet>0,15)&&(JetHBCSV>0,04)&&(LepEta>-2,4)&&(LepEta<2,4)",
+  "(Jet1Pt<1060)&&(Met<1100)&&(mt<190)&&(LepPt<45)&&(HT<1400)&&(JetHBpt<900)&&(DRJet<4,5)&&(DRJet>0,4)&&(JetHBCSV>0,045)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt<1050)&&(Met<1000)&&(mt<200)&&(LepPt<49)&&(HT<1450)&&(JetHBpt<900)&&(DRJet<4,9)&&(DRJet>0,4)&&(JetHBCSV>0,04)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt<1000)&&(Met<1000)&&(mt<220)&&(LepPt<48)&&(HT<1400)&&(JetHBpt<800)&&(DRJet<4,5)&&(DRJet>0,4)&&(JetHBCSV>0,04)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt<1050)&&(Met<1125)&&(mt<195)&&(LepPt<43)&&(HT<1375)&&(JetHBpt<820)&&(DRJet<4,5)&&(DRJet>0,4)&&(JetHBCSV>0,045)&&(LepEta>-2,4)&&(LepEta<2,3)",
+  "(Jet1Pt<1050)&&(Met<1125)&&(mt<195)&&(LepPt<43)&&(HT<1375)&&(JetHBpt<820)&&(DRJet<4,3)&&(DRJet>0,1)&&(JetHBCSV>0,0575)&&(LepEta>-2,4)&&(LepEta<2,3)",
+  "(Jet1Pt<1000)&&(Met<1150)&&(mt<250)&&(LepPt<45)&&(HT<1300)&&(JetHBpt<950)&&(DRJet<4,4)&&(DRJet>0,2)&&(JetHBCSV>0,04)&&(LepEta>-2,3)&&(LepEta<2)",
+  "(Jet1Pt<1100)&&(Met<1200)&&(mt<250)&&(LepPt<38)&&(HT<1700)&&(JetHBpt<800)&&(DRJet<4,2)&&(DRJet>0,3)&&(JetHBCSV>0)&&(LepEta>-2,2)&&(LepEta<2)",
+  "(Jet1Pt<975)&&(Met<1100)&&(mt<260)&&(LepPt<40)&&(HT<1600)&&(JetHBpt<975)&&(DRJet<4)&&(DRJet>0,2)&&(JetHBCSV>0)&&(LepEta>-2,3)&&(LepEta<2)",
+  "(Jet1Pt<950)&&(Met<1150)&&(mt<250)&&(LepPt<46)&&(HT<1350)&&(JetHBpt<1025)&&(DRJet<4)&&(DRJet>0,2)&&(JetHBCSV>0)&&(LepEta>-2,1)&&(LepEta<1,7)",
+  "(Jet1Pt<1000)&&(Met<1250)&&(mt<250)&&(LepPt<42)&&(HT<1550)&&(JetHBpt<830)&&(DRJet<4,2)&&(DRJet>0,3)&&(JetHBCSV>0,04)&&(LepEta>-2)&&(LepEta<1,7)",
+  "(Jet1Pt<1100)&&(Met<1300)&&(mt<225)&&(LepPt<32)&&(HT<1490)&&(JetHBpt<830)&&(DRJet<4,2)&&(DRJet>0)&&(JetHBCSV>0,04)&&(LepEta>-2,1)&&(LepEta<2)",
+  "(Jet1Pt<925)&&(Met<1280)&&(mt<250)&&(LepPt<42)&&(HT<1500)&&(JetHBpt<950)&&(DRJet<4,1)&&(DRJet>0)&&(JetHBCSV>0,03)&&(LepEta>-2,2)&&(LepEta<2,1)",
+  "(Jet1Pt<975)&&(Met<980)&&(mt<250)&&(LepPt<40)&&(HT<1400)&&(JetHBpt<1000)&&(DRJet<3,8)&&(DRJet>0,2)&&(JetHBCSV>0)&&(LepEta>-2,2)&&(LepEta<2)",
+  "(Jet1Pt<1025)&&(Met<1200)&&(mt<250)&&(LepPt<42)&&(HT<1450)&&(JetHBpt<900)&&(DRJet<4,1)&&(DRJet>0,15)&&(JetHBCSV>0,05)&&(LepEta>-2,2)&&(LepEta<2)"}
+
+  string bkg_truncation[]  =
+  {"",
+	"(Jet1Pt<700)&&(Met<800)&&(mt<700)&&(LepPt<130)&&(HT<800)&&(JetHBpt<750)&&(JetHBCSV>0)",
+  "(Jet1Pt<505)&&(Met<575)&&(mt<900)&&(LepPt<220)&&(HT<640)&&(JetHBpt<505)&&(JetHBCSV>0)&&(DRJet>0,02)",
+  "(Jet1Pt<700)&&(Met<675)&&(mt<650)&&(LepPt<355)&&(HT<900)&&(JetHBpt<680)&&(DRJet<5,3)&&(DRJet>0)&&(JetHBCSV>0)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt<925)&&(Met<925)&&(mt<1050)&&(LepPt<560)&&(HT<1300)&&(JetHBpt<960)&&(DRJet<5,6)&&(DRJet>0,2)&&(JetHBCSV>0)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt<1250)&&(Met<1200)&&(mt<1275)&&(LepPt<880)&&(HT<1675)&&(JetHBpt<1300)&&(DRJet<5,1)&&(DRJet>0,2)&&(JetHBCSV>0)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt>180)&&(Jet1Pt<2300)&&(Met<1860)&&(mt<1450)&&(LepPt<1450)&&(HT<2700)&&(JetHBpt<2250)&&(DRJet<5,1)&&(DRJet>0,2)&&(JetHBCSV>0)&&(LepEta>-2,5)&&(LepEta<2,5)",
+  "(Jet1Pt>540)&&(Jet1Pt<2800)&&(Met<2700)&&(mt<1550)&&(LepPt<2175)&&(HT>700)&&(HT<4700)&&(JetHBpt<3100)&&(DRJet<5)&&(DRJet>0)&&(JetHBCSV>0)&&(LepEta>-2,4)&&(LepEta<2,5)",
+  "(Jet1Pt<1100)&&(Met<800)&&(mt<700)&&(LepPt<500)&&(HT<2000)&&(JetHBpt<900)&&(DRJet<4,6)&&(DRJet>0,1)&&(JetHBCSV>0,04)"};
   //Creating target directory
   const char* directory_name = "truncated_data/";
   mkdir(directory_name, 0777);
@@ -129,5 +159,3 @@ void truncation_rootfile(){
   truncate(data_bkg, stop_path, directory_name, bkg_truncation);
   printf("TRUNCATION FINISH\n");
 }
-
-
