@@ -2,8 +2,8 @@
 Truncating program for each skimmed root file.
 Creating truncated file in truncated_data/ according to furnished criteria of each root file.
 Fill with truncation critera
-TO BE TESTED
-11/05/2020
+WORKING
+15/05/2020
 */
 #include <iostream>
 #include <iomanip>
@@ -41,6 +41,7 @@ void truncate(string data[], string path, const char* dir, string selection[]){
   int n_selection = array_size(selection);
   if (n_data!=n_selection){
     printf("Error : not matching data set and selection\n");
+    return;
   }
   for (i = 0; i < n_data; i++){
     //Loading root data
@@ -70,10 +71,6 @@ void truncation_rootfile(){
               "T2DegStop_325_295.root",
               "T2DegStop_350_320.root",
               "T2DegStop_375_345.root",
-              "T2DegStop_400_370.root",
-              "T2DegStop_425_395.root",
-              "T2DegStop_450_420.root",
-              "T2DegStop_475_445.root",
               "T2DegStop_400_370.root",
               "T2DegStop_425_395.root",
               "T2DegStop_450_420.root",
@@ -124,7 +121,7 @@ void truncation_rootfile(){
   "(Jet1Pt<1060)&&(Met<1050)&&(mt<370)&&(LepPt<78)&&(HT<1560)&&(JetHBpt<865)&&(DrJetHBLep<4.9)&&(DrJetHBLep>0)&&(JetHBCSV>0.4)&&(LepEta>-2.4)&&(LepEta<2.4)", //Stop_300_270
   "(Jet1Pt<1250)&&(Met<1050)&&(mt<330)&&(LepPt<75)&&(HT<1640)&&(JetHBpt<1000)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0)&&(LepEta>-2.5)&&(LepEta<2.5)", //Stop_325_295
   "(Jet1Pt<1240)&&(Met<1340)&&(mt<285)&&(LepPt<74)&&(HT<1900)&&(JetHBpt<1200)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0.05)&&(LepEta>-2.35)&&(LepEta<2.4)", //Stop_350_320
-  "(Jet1Pt<1400)&&(Met<1300)&&(mt<400)&&(LepPt<69)&&(HT<1900)&&(JetHBpt<1100)&&(DrJetHBLep<5.1)&&(DrJetHBLep>0)&&(JetHBCSV>0.052)&&(LepEta>-2.5)&&(LepEta<2,4)", //Stop_375_345
+  "(Jet1Pt<1400)&&(Met<1300)&&(mt<400)&&(LepPt<69)&&(HT<1900)&&(JetHBpt<1100)&&(DrJetHBLep<5.1)&&(DrJetHBLep>0)&&(JetHBCSV>0.052)&&(LepEta>-2.5)&&(LepEta<2.4)", //Stop_375_345
   "(Jet1Pt<1200)&&(Met<1350)&&(mt<350)&&(LepPt<74)&&(HT<1700)&&(JetHBpt<1000)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0.04)&&(LepEta>-2.5)&&(LepEta<2.5)", //Stop_400_370
   "(Jet1Pt<1300)&&(Met<1375)&&(mt<250)&&(LepPt<60)&&(HT<1900)&&(JetHBpt<1080)&&(DrJetHBLep<4.7)&&(DrJetHBLep>0)&&(JetHBCSV>0.04)&&(LepEta>-2.5)&&(LepEta<2.3)", //Stop_425_395
   "(Jet1Pt<1200)&&(Met<1300)&&(mt<260)&&(LepPt<53)&&(HT<1575)&&(JetHBpt<1000)&&(DrJetHBLep<4.9)&&(DrJetHBLep>0.15)&&(JetHBCSV>0.04)&&(LepEta>-2.4)&&(LepEta<2.4)", //Stop_450_420
@@ -141,7 +138,8 @@ void truncation_rootfile(){
   "(Jet1Pt<1100)&&(Met<1300)&&(mt<225)&&(LepPt<32)&&(HT<1490)&&(JetHBpt<830)&&(DrJetHBLep<4.2)&&(DrJetHBLep>0)&&(JetHBCSV>0.04)&&(LepEta>-2.1)&&(LepEta<2)", //Stop_725_695
   "(Jet1Pt<925)&&(Met<1280)&&(mt<250)&&(LepPt<42)&&(HT<1500)&&(JetHBpt<950)&&(DrJetHBLep<4.1)&&(DrJetHBLep>0)&&(JetHBCSV>0.03)&&(LepEta>-2.2)&&(LepEta<2.1)", //Stop_750_720
   "(Jet1Pt<975)&&(Met<980)&&(mt<250)&&(LepPt<40)&&(HT<1400)&&(JetHBpt<1000)&&(DrJetHBLep<3.8)&&(DrJetHBLep>0.2)&&(JetHBCSV>0)&&(LepEta>-2.2)&&(LepEta<2)", //Stop_775_745
-  "(Jet1Pt<1025)&&(Met<1200)&&(mt<250)&&(LepPt<42)&&(HT<1450)&&(JetHBpt<900)&&(DrJetHBLep<4.1)&&(DrJetHBLep>0.15)&&(JetHBCSV>0.05)&&(LepEta>-2.2)&&(LepEta<2)"}; //Stop_800_770
+  "(Jet1Pt<1025)&&(Met<1200)&&(mt<250)&&(LepPt<42)&&(HT<1450)&&(JetHBpt<900)&&(DrJetHBLep<4.1)&&(DrJetHBLep>0.15)&&(JetHBCSV>0.05)&&(LepEta>-2.2)&&(LepEta<2)", //Stop_800_770
+  "0"};
 
   string bkg_truncation[]  =
   {"", //Wjets_70to100
@@ -152,7 +150,8 @@ void truncation_rootfile(){
   "(Jet1Pt<1250)&&(Met<1200)&&(mt<1275)&&(LepPt<880)&&(HT<1675)&&(JetHBpt<1300)&&(DrJetHBLep<5.1)&&(DrJetHBLep>0.2)&&(JetHBCSV>0)&&(LepEta>-2.5)&&(LepEta<2.5)", //Wjets_800to1200
   "(Jet1Pt>180)&&(Jet1Pt<2300)&&(Met<1860)&&(mt<1450)&&(LepPt<1450)&&(HT<2700)&&(JetHBpt<2250)&&(DrJetHBLep<5.1)&&(DrJetHBLep>0.2)&&(JetHBCSV>0)&&(LepEta>-2.5)&&(LepEta<2.5)", //Wjets_1200to2500
   "(Jet1Pt>540)&&(Jet1Pt<2800)&&(Met<2700)&&(mt<1550)&&(LepPt<2175)&&(HT>700)&&(HT<4700)&&(JetHBpt<3100)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0)&&(LepEta>-2.4)&&(LepEta<2.5)", //Wjets_2500toInf
-  "(Jet1Pt<1100)&&(Met<800)&&(mt<700)&&(LepPt<500)&&(HT<2000)&&(JetHBpt<900)&&(DrJetHBLep<4.6)&&(DrJetHBLep>0.1)&&(JetHBCSV>0.04)"}; //TT_pow
+  "(Jet1Pt<1100)&&(Met<800)&&(mt<700)&&(LepPt<500)&&(HT<2000)&&(JetHBpt<900)&&(DrJetHBLep<4.6)&&(DrJetHBLep>0.1)&&(JetHBCSV>0.04)", //TT_pow
+  "0"};
   //Creating target directory
   const char* directory_name = "truncated_data/";
   mkdir(directory_name, 0777);
