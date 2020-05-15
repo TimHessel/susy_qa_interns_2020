@@ -4,7 +4,7 @@ import pandas
 import os
 
 #Path to data
-stop_path = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19/"
+stop_path = "/home/t3cms/thessel/truncated_data/"
 #Signal data to be imported
 data_sig = ["T2DegStop_250_220.root",
             "T2DegStop_275_245.root",
@@ -60,8 +60,6 @@ event_caracters = ["XS", "Nevt"] #Cross section and number of events
 
 stop_branches = inputs_variables + event_caracters
 
-#Preselection parameters
-preselection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (Met > 280) && (HT > 200) && (isTight == 1) && (Jet1Pt > 110)"
 
 def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
     #Convert root data into DataFrame
@@ -69,8 +67,7 @@ def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
     for name in data :
         #Converted root data as DataFrame
         data_tmp = root_numpy.root2array(data_path + name,
-                                        treename=bdttree, #?
-                                        selection = pre_selection
+                                        treename=bdttree,
                                         branches = data_features
                                         )
         #Updating DataFrame with converted data
