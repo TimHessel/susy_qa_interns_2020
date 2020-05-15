@@ -61,7 +61,7 @@ event_caracters = ["XS", "Nevt"] #Cross section and number of events
 stop_branches = inputs_variables + event_caracters
 
 
-def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
+def data_loader(data_path, data, data_features, XS_norm) :
     #Convert root data into DataFrame
     loaded_data = []
     for name in data :
@@ -88,5 +88,5 @@ def data_loader(data_path, data, data_features, pre_selection, XS_norm) :
     return loaded_data
 
 
-sig = data_loader(stop_path, data_sig, stop_branches, preselection, False)
-bkg = data_loader(stop_path, bkg_sig, stop_branches, preselection, True)
+sig = data_loader(stop_path, data_sig, stop_branches, False)
+bkg = data_loader(stop_path, bkg_sig, stop_branches, True)
