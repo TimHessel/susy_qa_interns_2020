@@ -89,4 +89,6 @@ def data_loader(data_path, data, data_features, XS_norm) :
 
 
 sig = data_loader(stop_path, data_sig, stop_branches, False)
+loaded_data.to_csv("signal.csv" , index =False)
 bkg = data_loader(stop_path, bkg_sig, stop_branches, True)
+loaded_data.to_csv("background.csv" , index =False)
