@@ -83,22 +83,10 @@ def data_loader(data_path, data) :
 	xs_indice = 1 #indice of cross section in numpy arrays
 	#Normalizing by number of event inside each cross section
 	i=0
-	XS_tot=0
-	print("NEvent = " + str(loaded_data.shape[0]))
 	weights = np.zeros(loaded_data.shape[0])
-	while i<loaded_data.shape[0] :
-        	#XS loop, each time i changes, jump to another cross section group of events
-		j = i
-		print("Cross section = " + str(loaded_data[i][xs_indice]))
-		#calculating total cross section
-		XS_tot += loaded_data[i][xs_indice]
-		while j<loaded_data.shape[0] and loaded_data[i][xs_indice] == loaded_data[j][xs_indice] :
-			j+=1
-			
-		#weights calculation
-		for k in range (i,j) :
-			weights[k] = loaded_data[k][xs_indice]/n_event[k]
-		i=j+1
+	#Weights calculation
+	for i in range(loaded_data.shape[0]) :
+		weights[i] = loaded_data[i][xs_indice]/n_event[i]
 	return loaded_data, weights
 
 def data_crafter(data, data_weights) :
