@@ -11,7 +11,7 @@ import os
 
 path = "/home/t3cms/thessel/"
 sig = np.loadtxt("sig.csv")
-bkg = np.loadtxt("bkg.csv")
+bkg = np.loadtxt("bkg_full.csv")         
 predictions = np.loadtxt("predictions_strong.csv")
 sig_tot = sig.shape[0]
 bkg_tot = bkg.shape[0]
