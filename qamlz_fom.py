@@ -9,7 +9,7 @@ import numpy as np
 import os
 
 path = "/home/t3cms/thessel/"
-sig = np.loadtxt("sig.csv")
+sig = np.loadtxt("sig_point.csv")
 bkg = np.loadtxt("bkg_full.csv")
 predictions = np.loadtxt("predictions_strong.csv")
 sig_tot = sig.shape[0]
@@ -36,10 +36,10 @@ else :
         #Computing Yields for fom calculation
         j = 0
         for j in range(selected_sig) :
-            s += sig[j, 1]*35866*2/sig[j, 0] #weight = XS*Luminosity*Splitfactor/Nevt
+            s += sig[j, 1]*35866/sig[j, 0] #weight = XS*Luminosity/Nevt
         k = 0
         for k in range(selected_bkg) :
-            b += bkg[k, 1]*35866*2/bkg[k, 0] #weight = XS*Luminosity*Splitfactor/Nevt
+            b += bkg[k, 1]*35866/bkg[k, 0] #weight = XS*Luminosity/Nevt
         #Calculating FOM
         FOM1 =  2*(s+b)*log(((s+b)*(b + (0.2*b)**2))/(b**2 + (s + b) * (0.2*b)**2))
         FOM2 =  log(1 + (s*b*b*0.2*0.2)/(b*(b+(0.2*b)**2)))/(0.2**2)
