@@ -26,7 +26,7 @@ if __name__ == "__main__":
     dataDev, dataVal = StopDataLoader(cfg.loc, inputBranches, selection=preselection,
                     suffix=suffix, signal=train_DM, test=test_point,
                     fraction=fraction, useSF=True)
-    dataVal["NN"] = prediction_maker(dataVal.category, 20)
+    dataVal["NN"] = prediction_maker(dataVal.category, 1)
 
     tmpSig, tmpBkg = getYields(dataVal)
     sigYield, sigYieldUnc = tmpSig
