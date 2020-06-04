@@ -227,9 +227,9 @@ def getYields(dataVal, cut=0.5, luminosity=35866):
     selectedSig = selectedVal[selectedVal.category == 1]
     selectedBkg = selectedVal[selectedVal.category == 0]
 
-    sigYield = np.sum(selectedSig.XS/selectSig.Nevt)
+    sigYield = np.sum(selectedSig.XS/selectedSig.Nevt)
     sigYieldUnc = np.sqrt(np.sum(np.square(selectedSig.weight)))
-    bkgYield = np.sum(selectedBkg.XS/selectBkg.Nevt)
+    bkgYield = np.sum(selectedBkg.XS/selectedBkg.Nevt)
     bkgYieldUnc = np.sqrt(np.sum(np.square(selectedBkg.weight)))
 
     sigYield = sigYield * luminosity

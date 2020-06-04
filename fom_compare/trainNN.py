@@ -1,21 +1,32 @@
 # Importing everything
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
-import numpy
-import time
+import numpy as np
 import pandas
 from sklearn.metrics import confusion_matrix, cohen_kappa_score
-from commonFunctions import getYields, FullFOM, myClassifier, gridClassifier, getDefinedClassifier, assure_path_exists, plotter, NNarch
+from commonFunctions import StopDataLoader, getYields, getYields_diogo, FullFOM
 import matplotlib.pyplot as plt
 #from scipy.stats import ks_2samp
 import localConfig as cfg
 #import pickle
-
+from false_prediction import prediction_maker
+import root_numpy
 
 if __name__ == "__main__":
     import sys
     # CAlculating FOM
-    dataVal["NN"] = valPredict
+    inputBranches = list(["Jet1Pt", "Met", "mt", "LepPt", "LepEta", "LepChg", "HT", "NbLoose", "Njet", "JetHBpt", "DrJetHBLep", "JetHBCSV", "XS"," weight"])
+    preselection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (Met > 280) && (HT > 200) && (isTight == 1) && (Jet1Pt > 110)"
+    suffix =""# "_skimmed"
+    luminosity = 35866
+    number_of_events_print = 1
+    test_point = "550_520"
+    train_DM = "DM30"
+    fraction=1
+    dataDev, dataVal = StopDataLoader(cfg.loc, inputBranches, selection=preselection,
+                    suffix=suffix, signal=train_DM, test=test_point,
+                    fraction=fraction, useSF=True)
+    dataVal["NN"] = prediction_maker(dataVal.category, 1)
 
     tmpSig, tmpBkg = getYields(dataVal)
     sigYield, sigYieldUnc = tmpSig
@@ -35,22 +46,22 @@ if __name__ == "__main__":
         fom, fomUnc = FullFOM(sig, bkg)
         fom_diogo, fomUnc_diogo = FullFOM(sign, bkgr)
         fomEvo.append(fom)
-        fomEvo_diogo.append(sign, bkgr)
+        fomEvo_diogo.append(fom_diogo)
         fomCut.append(cut)
 
 
-    f= open(plots_path+"FOM_evo_data.txt","w+")
+    f= open("FOM_evo_data.txt","w+")
     f.write("\n".join(map(str,fomEvo)))
     f.close()
 
-    f= open(plots_path+"FOM_cut_data.txt","w+")
+    f= open("FOM_cut_data.txt","w+")
     f.write("\n".join(map(str,fomCut)))
     f.close()
 
-    f= open(plots_path+"FOM_evo_diogo_data.txt","w+")
+    f= open("FOM_evo_diogo_data.txt","w+")
     f.write("\n".join(map(str,fomEvo_diogo)))
     f.close()
 
-    f= open(plots_path+"FOM_cut_diogo_data.txt","w+")
+    f= open("FOM_cut_data.txt","w+")
     f.write("\n".join(map(str,fomCut)))
     f.close()
