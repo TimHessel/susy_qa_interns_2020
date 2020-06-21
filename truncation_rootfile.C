@@ -151,7 +151,34 @@ void truncation_rootfile(){
   "(Jet1Pt>180)&&(Jet1Pt<2300)&&(Met<1860)&&(mt<1450)&&(LepPt<1450)&&(HT<2700)&&(JetHBpt<2250)&&(DrJetHBLep<5.1)&&(DrJetHBLep>0.2)&&(JetHBCSV>0)&&(LepEta>-2.5)&&(LepEta<2.5)", //Wjets_1200to2500
   "(Jet1Pt>540)&&(Jet1Pt<2800)&&(Met<2700)&&(mt<1550)&&(LepPt<2175)&&(HT>700)&&(HT<4700)&&(JetHBpt<3100)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0)&&(LepEta>-2.4)&&(LepEta<2.4)", //Wjets_2500toInf
   "(Jet1Pt<1100)&&(Met<800)&&(mt<700)&&(LepPt<500)&&(HT<2000)&&(JetHBpt<900)&&(DrJetHBLep<4.6)&&(DrJetHBLep>0.1)&&(JetHBCSV>0.04)", //TT_pow
-  "0"};
+  "(JetHBCSV>0)", //ZJetsToNuNu_HT100to200
+  "(Jet1Pt<420)&&(Met<425)&&(mt<145)&&(LepPt<24)&&(HT<450)&&(JetHBpt<410)&&(DrJetHBLep<4.8)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //ZJetsToNuNu_HT200to400
+  "(Jet1Pt<570)&&(Met<600)&&(mt<540)&&(LepPt<230)&&(HT<720)&&(JetHBpt<600)&&(DrJetHBLep<5.2)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //ZJetsToNuNu_HT400to600
+  "(Jet1Pt<740)&&(Met<800)&&(mt<860)&&(LepPt<430)&&(HT<950)&&(JetHBpt<750)&&(DrJetHBLep<5.2)&&(DrJetHBLep>0)&&(JetHBCSV>0.04)", //ZJetsToNuNu_HT600to800
+  "(Jet1Pt<1000)&&(Met<1020)&&(mt<1080)&&(LepPt<580)&&(HT<1300)&&(JetHBpt<980)&&(DrJetHBLep<5.2)&&(DrJetHBLep>0)&&(JetHBCSV>0.04)", //ZJetsToNuNu_HT800to1200
+  "(Jet1Pt>200)&&(Jet1Pt<1125)&&(Met<930)&&(mt<1000)&&(LepPt<720)&&(HT>300)&&(HT<1950)&&(JetHBpt<1100)&&(DrJetHBLep<4.8)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //ZJetsToNuNu_HT1200to2500
+  "(Jet1Pt>600)&&(Jet1Pt<1900)&&(Met<1000)&&(mt<2200)&&(LepPt<1600)&&(HT>800)&&(HT<4000)&&(JetHBpt<1800)&&(DrJetHBLep<4)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //ZJetsToNuNu_HT2500toInf
+  "(Jet1Pt<940)&&(Met<740)&&(mt<740)&&(LepPt<450)&&(HT<1350)&&(JetHBpt<930)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //WW
+  "(Jet1Pt<920)&&(Met<640)&&(mt<350)&&(LepPt<270)&&(HT<950)&&(JetHBpt<700)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //WZ
+  "(Jet1Pt<530)&&(Met<550)&&(mt<600)&&(LepPt<250)&&(HT<800)&&(JetHBpt<600)&&(DrJetHBLep<5)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //ZZ
+  "(Jet1Pt<5000)&&(Met<4000)&&(mt<400)&&(LepPt<200)&&(HT<5000)&&(JetHBpt<5000)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //DYJetsToLL_M50_HT100to200
+  "(Jet1Pt<430)&&(Met<380)&&(mt<100)&&(LepPt<110)&&(HT<480)&&(JetHBpt<420)&&(DrJetHBLep<4.6)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //DYJetsToLL_M50_HT200to400
+  "(Jet1Pt<700)&&(Met<600)&&(mt<230)&&(LepPt<300)&&(HT<820)&&(JetHBpt<700)&&(DrJetHBLep<5.4)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //DYJetsToLL_M50_HT400to600
+  "(Jet1Pt<840)&&(Met<750)&&(mt<280)&&(LepPt<480)&&(HT<1120)&&(JetHBpt<850)&&(DrJetHBLep<5.4)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //DYJetsToLL_M50_HT400to800
+  "(Jet1Pt<1200)&&(Met<1030)&&(mt<160)&&(LepPt<670)&&(HT<1600)&&(JetHBpt<1150)&&(DrJetHBLep<5.4)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //DYJetsToLL_M50_HT800to1200
+  "(Jet1Pt<1600)&&(Met<1250)&&(mt<125)&&(LepPt<800)&&(HT>860)&&(HT<2430)&&(JetHBpt<1425)&&(DrJetHBLep<4.8)&&(DrJetHBLep>0)&&(JetHBCSV>0)", //DYJetsToLL_M50_HT1200to2500
+  "(Jet1Pt>600)&&(Jet1Pt<2300)&&(Met<1450)&&(mt<350)&&(LepPt<800)&&(HT>1700)&&(HT<4200)&&(JetHBpt<2500)&&(DrJetHBLep<3.7)&&(DrJetHBLep>0)&&(JetHBCSV>0)&&(LepEta>-2)&&(LepEta<2)", //DYJetsToLL_M50_HT2500toInf
+  "(JetHBCSV>0)", //DYJetsToLL_M5to50_HT100to200
+  "(Jet1Pt<430)&&(Met<340)&&(mt<40)&&(LepPt<100)&&(JetHBCSV>0)&&(LepEta>-2)&&(LepEta<2)", //DYJetsToLL_M5to50_HT200to400
+  "(Jet1Pt<550)&&(Met<470)&&(mt<35)&&(LepPt<180)&(HT>280)&&(HT<620)&&(JetHBpt<530)&&(DrJetHBLep<4.4)&&(JetHBCSV>0)", //DYJetsToLL_M5to50_HT400to600
+  "(Jet1Pt>160)&&(Jet1Pt<910)&&(Met<760)&&(mt<60)&&(LepPt<400)&(HT>380)&&(HT<1275)&&(JetHBpt<900)&&(DrJetHBLep<4.5)&&(JetHBCSV>0.06)", //DYJetsToLL_M5to50_HT600toInf
+  "(Jet1Pt<670)&&(Met<510)&&(mt<120)&&(LepPt<220)&&(HT>1300)&&(HT<650)&&(JetHBpt<650)&&(DrJetHBLep<4.8)&&(JetHBCSV>0)", //TBar_tch_powheg
+  "(Jet1Pt<1000)&&(Met<780)&&(mt<425)&&(LepPt<560)&&(HT<2080)&&(JetHBpt<900)&&(DrJetHBLep<4.5)&&(JetHBCSV>0)", //TBar_tWch_ext
+  "(Jet1Pt<800)&&(Met<650)&&(mt<120)&&(LepPt<290)&&(HT<1470)&&(JetHBpt<670)&&(DrJetHBLep<4.8)&&(JetHBCSV>0)", //T_tch_powheg
+  "(Jet1Pt<1000)&&(Met<850)&&(mt<520)&&(LepPt<530)&&(HT<2000)&&(JetHBpt<880)&&(DrJetHBLep<4.8)&&(JetHBCSV>0.12)", //T_tWch_ext
+"0"
+};
+
   //Creating target directory
   const char* directory_name = "truncated_data/";
   mkdir(directory_name, 0777);
