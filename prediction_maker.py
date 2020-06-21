@@ -43,7 +43,6 @@ def get_classifier(data, weights) :
         for var in range(len(weights[0])) :
             tmp += data[i][var]*float(weights[0][var])
         r.append(tmp)
-    print(type(tmp))
     return r
         
 #creating lists of weak classifiers, labels and tags
