@@ -5,6 +5,8 @@
 #a training sample and a testing sample for signal and
 #background. Normalising training signal by number of event
 #and training background by number of event and cross section.
+#Interpolate the values of the variables between -1/N and 1/N
+#with N the number of variables.
 #WORKING
 ##########################
 
@@ -17,7 +19,7 @@ import random
 
 #Path to data
 stop_path = "truncated_data/"
-#Signal data to be imported
+#Training signal data, every signal point but (550, 520)
 data_train_sig = ["T2DegStop_250_220.root",
             "T2DegStop_275_245.root",
             "T2DegStop_300_270.root",
@@ -30,7 +32,6 @@ data_train_sig = ["T2DegStop_250_220.root",
             "T2DegStop_475_445.root",
             "T2DegStop_500_470.root",
             "T2DegStop_525_495.root",
-            #"T2DegStop_550_520.root",
             "T2DegStop_575_545.root",
             "T2DegStop_600_570.root",
             "T2DegStop_625_595.root",
@@ -40,31 +41,26 @@ data_train_sig = ["T2DegStop_250_220.root",
             "T2DegStop_725_695.root",
             "T2DegStop_750_720.root",
             "T2DegStop_775_745.root",
-            "T2DegStop_800_770.root"
-            ]
-
+            "T2DegStop_800_770.root"]
+#Testing signal data, only (550, 520) signal point
 data_test_sig = ["T2DegStop_550_520.root"]
-#Background data to be imported
-data_main_bkg = [#"Wjets_70to100.root",
-        #"Wjets_100to200.root",
-        "Wjets_200to400.root",
+#Main background data to be imported
+data_main_bkg = ["Wjets_200to400.root",
         "Wjets_400to600.root",
         "Wjets_600to800.root",
         "Wjets_800to1200.root",
         "Wjets_1200to2500.root",
-        #"Wjets_2500toInf.root",
-        "TT_pow.root",#,
-        #"ZJetsToNuNu_HT100to200.root",
+        "TT_pow.root",
         "ZJetsToNuNu_HT200to400.root",
         "ZJetsToNuNu_HT400to600.root",
         "ZJetsToNuNu_HT600to800.root",
         "ZJetsToNuNu_HT800to1200.root",
         "ZJetsToNuNu_HT1200to2500.root",
-        "ZJetsToNuNu_HT2500toInf.root"
-        ]
-data_minor_bkg = ["Wjets_70to100.root",
-        "Wjets_100to200.root",
-        "Wjets_2500toInf.root",
+        "ZJetsToNuNu_HT2500toInf.root"]
+#Minor background bata to be imported
+data_minor_bkg = ["Wjets_70to100.root", #Low XS WJets process
+        "Wjets_100to200.root", #Low XS WJets process
+        "Wjets_2500toInf.root", #Low XS Wjets process
         "WW.root",
         "WZ.root",
         "ZZ.root",
@@ -79,19 +75,16 @@ data_minor_bkg = ["Wjets_70to100.root",
         "DYJetsToLL_M5to50_HT200to400.root",
         "DYJetsToLL_M5to50_HT400to600.root",
         "DYJetsToLL_M5to50_HT600toInf.root",
-        #"TBar_tch_powheg.root",
         "TBar_tWch_ext.root",
         "T_tch_powheg.root",
-        "T_tWch_ext.root"
-        ]
-
+        "T_tWch_ext.root"]
 
 def data_loader(data_path, data, XS_norm) :
-    #Convert root data into matrix
+    #Convert root data into dataframe and calculating weights for normalization
     data_tag = []
-    numbers_of_letters = 4
+    numbers_of_letters = 4 #First letters to be written in the tag column
     for name in data :
-        #Converting root data as matrixes
+        #Converting root data into dataframe
         data_tmp = root_numpy.root2array(data_path + "truncated_" +name,treename="bdttree")
         data_tmp = pd.DataFrame(data_tmp)
         #Concatening loaded data
@@ -99,25 +92,23 @@ def data_loader(data_path, data, XS_norm) :
             loaded_data = data_tmp
         else :
             loaded_data = loaded_data.append(data_tmp, ignore_index = True)
-        #Building an array of corresponding original data set for each event
+        #Building tag event array
         j = 0
-        for j in range(len(data_tmp)):
+        for j in range(len(data_tmp)): 
             data_tag.append(name[:numbers_of_letters])
-    #nevent_indice = 1 #indice of number of events in numpy matrices
-    #xs_indice = 2 #indice of cross section in numpy matrices
     i = 0
     weights = [[0]]*len(loaded_data)
     #Weights calculation
     for i in range(len(loaded_data)) :
-        if XS_norm == True :
+        if XS_norm == True : #Normalization by number of event and cross section
             weights[i] = loaded_data.XS[i]*1000000/loaded_data.Nevt[i]
-        else :
+        else : #Normalization by number of event only
             weights[i] = 1000000/loaded_data.Nevt[i]
-    loaded_data["Tag"] = data_tag
+    loaded_data["Tag"] = data_tag #Appending tag array into dataframe
     return loaded_data, weights
 
 def data_crafter(data, data_weights) :
-        #Randomly picking a large amount of events from data according to corresponding weights
+        #Randomly picking a large amount of events from data according to weights
         tot_weights = sum(data_weights)
         step_weights = max(data_weights)
         set_size = int(tot_weights/step_weights)
@@ -141,6 +132,7 @@ def data_crafter(data, data_weights) :
                         evt += 1
                 j+=1
         k = 0
+	#Appending selected data in a new dataframe
         picked_data = data.loc[picked_list].reset_index(drop=True)
         return picked_data
 
@@ -174,7 +166,7 @@ csv_folder = "stop_data/"
 if not os.path.exists(csv_folder) :
 	os.mkdir(csv_folder)
 
-#Converting data to numpy
+#Loading root data to dataframe
 print("Loading train signal data")
 train_sig, train_sig_weights = data_loader(stop_path, data_train_sig, False)
 print("Loading test signal data")
@@ -184,20 +176,30 @@ bkg_main, bkg_main_weights = data_loader(stop_path, data_main_bkg, True)
 print("Loading minor background data")
 bkg_minor, _ = data_loader(stop_path, data_minor_bkg, False)
 print("All data loaded")
-#Picking signal events according to calculated weights
+
+#Picking train signal events according to calculated weights
 print("Preparing signal sample")
 picked_train_sig = data_crafter(train_sig, train_sig_weights)
 print("Train sig : " + str(len(picked_train_sig)))
+#Picking every test signal events of root data
 picked_test_sig = test_sig.sample(frac=1).reset_index(drop=True)
 print("Test sig : " + str(len(picked_test_sig)))
 print("Preparing background sample")
-bkg_main = bkg_main.sample(frac=1).reset_index(drop=True)
-bkg_limit = len(bkg_main)/2
+#Distributing main background data into two equal parts 
 print("Main bkg : " + str(len(bkg_main)))
-picked_train_bkg = bkg_main[:bkg_limit].copy()
-picked_train_bkg = data_crafter(picked_train_bkg, bkg_main_weights[:bkg_limit])
+bkg_limit = len(bkg_main)/2
+#Creating shuffled list of main background indices
+mixed_bkg_ind = range(len(bkg_main)) 
+random.shuffle(mixed_bkg_ind)
+#Selecting one half of main background
+mixed_bkg_train = bkg_main.ix[mixed_bkg_ind[:bkg_limit]].copy().reset_index(drop=True)
+#bkg_train_weights = bkg_main_weights[mixed_bkg_ind[:bkg_limit]]
+bkg_train_weights = [bkg_main_weights[i] for i in mixed_bkg_ind[:bkg_limit]]
+#Normalizing train background by cross section and number of event
+picked_train_bkg = data_crafter(mixed_bkg_train, bkg_train_weights)
 print("Train bkg : " + str(len(picked_train_bkg)))
-picked_test_bkg = bkg_main[bkg_limit:].copy().reset_index(drop=True)
+#Building test background sample as the other half of main processes plus minor processes
+picked_test_bkg = bkg_main.ix[mixed_bkg_ind[bkg_limit:]].copy().reset_index(drop=True)
 picked_test_bkg = picked_test_bkg.append(bkg_minor, ignore_index=True)
 print("Minor bkg : " + str(len(bkg_minor)))
 picked_test_bkg = picked_test_bkg.sample(frac=1).reset_index(drop=True)
