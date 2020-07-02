@@ -1,6 +1,10 @@
 ############################################################################
-#29/06/2020 - NOT WORKING
-#trying to anneal
+#29/06/2020 -  WORKING
+#train_size50000
+#cutoff = True
+#2 folds
+#AUGMENT
+#Fix_variable = False
 ############################################################################
 
 #Python imports
@@ -11,7 +15,6 @@ from multiprocessing import Pool
 import os
 import datetime
 import time
-from secret_token import secret_token
 #Dwave imports
 from dwave.system.samplers import DWaveSampler
 from dwave.cloud import Client
@@ -103,7 +106,7 @@ def anneal(C_i, C_ij, mu, sigma, l, strength_scale, energy_fraction, ngauges, ma
         while cant_connect:
             try:
                 print('about to call remote')
-                client = Client.from_config(token='ISIN-08ff86db762c51f3d40cd03dcb90113132430943')
+                client = Client.from_config(token='secret_token')
                 solver = client.get_solvers()
                 dwave_sampler = DWaveSampler(solver={'qpu': True})      # define sampler
                 print('called remote {}'.format(dwave_sampler))
@@ -163,14 +166,14 @@ def anneal(C_i, C_ij, mu, sigma, l, strength_scale, energy_fraction, ngauges, ma
 
             if not embedded:
                 continue
+            print("emebeding found")
 
             print("Quantum annealing")
             try_again = True
             while try_again:
                 try:
                     #Annealing, saving energy and sample list
-                    sampleset = sampler.sample_ising(h_gauge, J_gauge, chain_strength = strength_scale)
-                    print("sampleset : ", sampleset)
+                    sampleset = sampler.sample_ising(h_gauge, J_gauge, chain_strength = strength_scale, num_reads=200, annealing_time = 20)
                     try_again = False
                 except:
                     print('runtime or ioerror, trying again')
@@ -179,13 +182,14 @@ def anneal(C_i, C_ij, mu, sigma, l, strength_scale, energy_fraction, ngauges, ma
             print("Quantum done")
             
             qaresult.append(sampleset.record[0][0].tolist())
-            print("qaresult : ", qaresult)
-            print(type(qaresult))
+            qaresult = np.asarray(qaresult)
             qaresult = qaresult * a
-            for i in range(len(qaresult)) :
-                qaresults.append(qaresult[i])
+            qaresults[g*nreads:(g+1)*nreads] = qaresult
+
 
         full_strings= np.zeros((len(qaresults),len(C_i)))
+        full_strings = np.asarray(full_strings)
+        qaresults = np.asarray(qaresults)
         if FIXING_VARIABLES:
             j = 0
             for i in range(len(C_i)):
@@ -220,6 +224,9 @@ def anneal(C_i, C_ij, mu, sigma, l, strength_scale, energy_fraction, ngauges, ma
         if len(unique_indices) > max_excited_states:
             sorted_indices = np.argsort(energies[unique_indices])[-max_excited_states:]
             unique_indices = unique_indices[sorted_indices]
+        print("unique indices : ", unique_indices)
+        print(type(unique_indices[0]))
+        print(type(full_strings))
         final_answers = full_strings[unique_indices]
         print('number of selected excited states', len(final_answers))
 
