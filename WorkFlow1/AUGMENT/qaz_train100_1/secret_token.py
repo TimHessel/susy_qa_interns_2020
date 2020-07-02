@@ -1,0 +1,1 @@
+secret_token = 'ISIN-08ff86db762c51f3d40cd03dcb90113132430943'
