@@ -135,7 +135,7 @@ def anneal(C_i, C_ij, mu, sigma, l, strength_scale, energy_fraction, ngauges, ma
                             J_gauge[(i, j)] = J[(i, j)]*a[i]*a[j]
                 try:
                     print("Trying to find embeding")
-                    sampler = EmbeddingComposite(DWaveSampler(token='secret_token') )
+                    sampler = EmbeddingComposite(DWaveSampler(token='ISIN-c08e90a495b62b96240dc4c54c583fbb509a11ad') )
                     embedded = True
                     break
                 except ValueError:      # no embedding found
