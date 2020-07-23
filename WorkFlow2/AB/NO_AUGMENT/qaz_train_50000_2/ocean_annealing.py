@@ -38,7 +38,7 @@ flip_state = -1
 
 AUGMENT_CUTOFF_PERCENTILE = 0
 AUGMENT_SIZE = 7   # must be an odd number (since augmentation includes original value in middle)
-AUGMENT_OFFSET = 0.014
+AUGMENT_OFFSET = 0.015
 
 AUGMENT = False
 UPDATING_HAMILTONIAN = True
@@ -251,10 +251,10 @@ def strong_classifier(predictions, weights):
     return np.dot(predictions.T, weights) 
 
 print('loading data')
-sig = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/CSV/stop_data/stop_train_sig_wc_AB.csv",delimiter=",", usecols=(3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25))
-sig_tag = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/CSV/stop_data/stop_train_sig_wc_AB.csv",delimiter=",",dtype="str", usecols=(15))
-bkg = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/CSV/stop_data/stop_train_bkg_wc_AB.csv",delimiter=",", usecols=(3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25))
-bkg_tag = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/CSV/stop_data/stop_train_bkg_wc_AB.csv",delimiter=",",dtype="str", usecols=(15))
+sig = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/AB/CSV/stop_train_sig_wc_AB.csv",delimiter=",", usecols=(3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24))
+sig_tag = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/AB/CSV/stop_train_sig_wc_AB.csv",delimiter=",",dtype="str", usecols=(15)) 
+bkg = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/AB/CSV/stop_train_bkg_wc_AB.csv",delimiter=",", usecols=(3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24))
+bkg_tag = np.loadtxt("/workspace/susy_qa_interns_2020/WorkFlow2/AB/CSV/stop_train_bkg_wc_AB.csv",delimiter=",",dtype="str", usecols=(15))
 sig_pct = float(len(sig)) / (len(sig) + len(bkg))
 bkg_pct = float(len(bkg)) / (len(sig) + len(bkg))
 print('loaded data')
