@@ -37,7 +37,7 @@ flip_others_probs = np.array([0.16, 0.08, 0.04, 0.02] + [0.01]*(n_iterations - 4
 flip_state = -1
 
 AUGMENT_CUTOFF_PERCENTILE = 85
-AUGMENT_SIZE = 7   # must be an odd number (since augmentation includes original value in middle)
+AUGMENT_SIZE = 11  # must be an odd number (since augmentation includes original value in middle)
 AUGMENT_OFFSET = 0.004
 
 AUGMENT = True
