@@ -95,18 +95,18 @@ def main():
 
   for sig_train in signal_train:
     print(f"Copy full {sig_train} to train...")
-    os.system(f"cp truncated/truncated_{sig_train} train")
+    os.system(f"cp truncated_data/truncated_{sig_train} train")
 
   for s_bkg in small_bkg:
     print(f"Copy full {s_bkg} to test...")
-    os.system(f"cp truncated/truncated_{s_bkg} test")
+    os.system(f"cp truncated_data/truncated_{s_bkg} test")
 
   print(f"Split {signal} between test and validation...")
-  half_split("truncated/truncated_"+signal, "test/"+signal, "validation/"+signal)
+  half_split("truncated_data/truncated_"+signal, "test/"+signal, "validation/"+signal)
 
   for m_bkg in main_bkg:
     print(f"Split {m_bkg} between test, train and validation...")
-    half_split("truncated/truncated_"+m_bkg, "test/"+m_bkg, "tmp/"+m_bkg)
+    half_split("truncated_data/truncated_"+m_bkg, "test/"+m_bkg, "tmp/"+m_bkg)
     half_split("tmp/"+m_bkg, "train/"+m_bkg, "validation/"+m_bkg)
 
   print("Remove temporary directory...")
